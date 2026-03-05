@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Birthday Love Quest</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --rose: #ff6b9f;
+            --deep-rose: #d62845;
+            --soft-rose: #ffd9e8;
+            --light-rose: #ffeef6;
+            --shadow: rgba(214, 40, 69, 0.25);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Poppins','Segoe UI',system-ui,sans-serif;
+            background: radial-gradient(circle at top, #ffe3f1, #ffbfd7 45%, #ff9ac0);
+            min-height: 100vh;
+            overflow: hidden;
+            color: #5b1830;
+        }
+        .page {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(20px,5vw,50px);
+            text-align: center;
+        }
+        #page2 {
+            display: none;
+            justify-content: flex-start;
+            gap: 20px;
+            padding-top: clamp(30px,6vh,70px);
+            overflow-y: auto;
+        }
+        h1 {
+            font-size: clamp(2rem,4vw,3rem);
+            color: var(--deep-rose);
+            margin-bottom: 20px;
+            text-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+        }
+        .polaroid {
+            background: #ffffff;
+            padding: 18px 18px 26px;
+            border-radius: 18px;
+            box-shadow: 0 18px 35px rgba(91,24,48,0.18);
+            width: min(280px,70vw);
+            margin-bottom: 25px;
+            transform: rotate(-2deg);
+        }
+        .polaroid p {
+            margin: 14px 0 0;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: #a03d63;
+            text-transform: uppercase;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        button {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg,#ff8fb4,#ff5f9e);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 10px 20px var(--shadow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        button:focus-visible { outline: 3px solid rgba(255,255,255,0.8); }
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 24px rgba(214,40,69,0.35);
+        }
+        #noButton { background: linear-gradient(135deg,#ffb347,#ffcc33); }
+        .surprise-button {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg,#ffd1e6,#ff99cc);
+            color: #5b1830;
+            box-shadow: 0 12px 20px rgba(255,153,204,0.35);
+        }
+        .surprise-button:hover { transform: rotate(-4deg) scale(1.05); }
+        .content-container {
+            background: rgba(255,255,255,0.9);
+            border-radius: 24px;
+            width: min(700px,90vw);
+            padding: clamp(20px,4vw,40px);
+            margin: 10px auto 40px;
+            box-shadow: 0 20px 35px rgba(91,24,48,0.12);
+            text-align: left;
+        }
+        .content-container h2 { text-align: center; color: var(--deep-rose); margin-bottom: 15px; }
+        .content-container p { line-height: 1.7; }
+        .content-container.pop { animation: popIn 0.5s ease; }
+        @keyframes popIn { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .list-container { display: flex; flex-direction: column; gap: 12px; }
+        .list-item {
+            display: flex;
+            gap: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            background: var(--light-rose);
+            align-items: center;
+        }
+        .list-number {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--rose);
+            color: white;
+            font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .kisses-background {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .kiss {
+            position: absolute;
+            animation: float 12s ease-in-out infinite;
+            opacity: 0.25;
+            font-size: 1.5rem;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+        }
+        .kisses-secondary .kiss { opacity: 0.18; }
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.2); }
+            100% { transform: translateY(0) scale(1); }
+        }
+        .subtext { text-align: center; color: #a03d63; font-style: italic; margin-bottom: 10px; }
+        @media (max-width: 600px) {
+            body { overflow-y: auto; }
+            .page { position: relative; min-height: 100vh; }
+            .polaroid { transform: rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="page1" class="page">
+        <div class="kisses-background" id="kissesPage1"></div>
+        <div class="polaroid">
+            <p>Us • Always & Forever</p>
+        </div>
+        <h1>Happy Birthday, Baby! 🎂</h1>
+        <div class="button-container">
+            <button id="yesButton">Yes ❤️</button>
+            <button id="noButton">No</button>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <div class="kisses-background kisses-secondary" id="kissesPage2"></div>
+        <h1>Birthday Surprises 💖</h1>
+        <p class="subtext">Pick a sparkle to unlock more love!</p>
+        <div class="button-container">
+            <button class="surprise-button" data-type="letter">💌</button>
+            <button class="surprise-button" data-type="reasons">💖</button>
+        </div>
+        <div id="contentArea" class="content-container">
+            <p style="text-align:center; color:#a03d63;">Tap one of the surprises above to begin the magic.</p>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const yesButton = document.getElementById('yesButton');
+            const noButton = document.getElementById('noButton');
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const contentArea = document.getElementById('contentArea');
+            let noRunMode = false;
+
+            function createFloatingEmojis(containerId, emoji, count) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                container.innerHTML = '';
+                for (let i = 0; i < count; i++) {
+                    const node = document.createElement('div');
+                    node.className = 'kiss';
+                    node.textContent = emoji;
+                    node.style.left = Math.random() * 100 + '%';
+                    node.style.top = Math.random() * 100 + '%';
+                    node.style.fontSize = (Math.random() * 1.5 + 1.2) + 'rem';
+                    node.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                    node.style.animationDelay = Math.random() * 5 + 's';
+                    container.appendChild(node);
+                }
+            }
+
+            createFloatingEmojis('kissesPage1', '😘', 28);
+            createFloatingEmojis('kissesPage2', '💋', 34);
+
+            function moveNoButton() {
+                if (!noRunMode) return;
+                const padding = 40;
+                const maxX = window.innerWidth - noButton.offsetWidth - padding;
+                const maxY = window.innerHeight - noButton.offsetHeight - padding;
+                const x = Math.random() * maxX + padding / 2;
+                const y = Math.random() * maxY + padding / 2;
+                noButton.style.position = 'fixed';
+                noButton.style.left = `${x}px`;
+                noButton.style.top = `${y}px`;
+            }
+
+            noButton.addEventListener('click', () => {
+                alert('How dare you! Try again!');
+                if (!noRunMode) {
+                    noRunMode = true;
+                    noButton.textContent = 'Catch me!';
+                    setTimeout(moveNoButton, 200);
+                }
+            });
+
+            ['mouseenter', 'touchstart'].forEach(evt => {
+                noButton.addEventListener(evt, () => {
+                    if (noRunMode) moveNoButton();
+                });
+            });
+
+            yesButton.addEventListener('click', () => {
+                page1.style.display = 'none';
+                page2.style.display = 'flex';
+            });
+
+            const reasons = [
+                "Because your smile lights up my world in ways I can't explain.",
+                "Because you make even ordinary moments feel special.",
+                "Because your kindness is contagious and makes me want to be better.",
+                "Because you understand me in ways no one else ever has.",
+                "Because you challenge me to grow and be my best self.",
+                "Because you make me laugh until my stomach hurts.",
+                "Because you see the best in me even when I can't see it myself.",
+                "Because you make me feel safe and protected in your love.",
+                "Because you inspire me to dream bigger and reach further.",
+                "Because being with you feels like coming home."
+            ];
+
+            function showContent(type) {
+                if (!contentArea) return;
+                let html = '';
+
+                if (type === 'letter') {
+                    html = `
+                        <h2>Happy Birthday, Baby 🎉</h2>
+                        <p>Happy birthday baby... We didn't know each other for a long time, but I feel you are really special and all. From the moment you came into my life, everything started to feel softer, brighter, and more beautiful.</p>
+                        <p>I love the way you make me smile without even trying. I want to keep learning you, growing with you, and making memories that feel like home. You mean more to me than I can say, and I'm so grateful for you.</p>
+                        <p>Today is all about celebrating you—your heart, your dreams, your laughter, and the magic you bring into my world. I hope this year gives you everything your soul is wishing for.</p>
+                        <p>Always yours.<br>❤️</p>
+                    `;
+                }
+
+                if (type === 'reasons') {
+                    const reasonList = reasons.map((reason, i) => `
+                        <div class="list-item">
+                            <div class="list-number">${i + 1}</div>
+                            <p>${reason}</p>
+                        </div>
+                    `).join('');
+                    html = `
+                        <h2>10 Reasons Why I Like You</h2>
+                        <div class="list-container">${reasonList}</div>
+                    `;
+                }
+
+                contentArea.innerHTML = html;
+                contentArea.classList.remove('pop');
+                void contentArea.offsetWidth;
+                contentArea.classList.add('pop');
+            }
+
+            document.querySelectorAll('.surprise-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    showContent(button.dataset.type);
+                    contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
